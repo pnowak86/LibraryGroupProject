@@ -24,7 +24,7 @@
     </thead>
     <tbody>
     <tr th:each="all_books,iter : ${List of all books}" th:class="${iter.odd}? 'odd'">
-        <td th:text="${all_books.ISTB}"></td>
+        <td th:text="${all_books.ISBN}"></td>
         <td th:text="${all_books.title}"></td>
         <td th:text="${all_books.author}"></td>
         <td th:text="${all_books.year}"></td>

@@ -16,13 +16,11 @@ import java.util.List;
  */
 @Service
 public class BookService {
-    private BookDao bookRepository;
-    private BookTransformer bookTransformer;
     private BookDao bookDao;
+
     @Autowired
-    public BookService(BookDao bookRepository, BookTransformer bookTransformer) {
-        this.bookRepository = bookRepository;
-        this.bookTransformer = bookTransformer;
+    public BookService(BookDao bookDao) {
+        this.bookDao = bookDao;
     }
 
 //    public Iterable<Book> getAll() {
