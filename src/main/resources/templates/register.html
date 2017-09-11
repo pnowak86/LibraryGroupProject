@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <link th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous"></link>
+    <script th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js}"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <title>Spring Security Example </title>
+</head>
+<body>
+<div class="container" th:if="${register}">
+    <form th:action="@{/register}" method="post">
+
+        <div class="form-group">
+            <div class="col-lg-3" for="username">
+                <label> User Name :
+                </label>
+                <input id="username" placeholder="username" required="required" class="form-control" type="text"
+                       name="username"/>
+
+                <label for="username" class="alert alert-danger" th:if="${usernameError!=null}"
+                      th:text="${usernameError}"></label>
+            </div>
+            <div class="col-lg-3">
+                <label for="password"> Password:</label>
+                <input id="password" placeholder="password" required="required" class="form-control"
+                       name="password"
+                       type="password"/>
+
+                <label for="password" class="alert alert-danger" th:if="${passwordError!=null}"
+                       th:text="${passwordError}"></label>
+            </div>
+            <div class="col-lg-3">
+                <label for="repeatpassword">Repeat password: </label>
+                <input id="repeatpassword" placeholder="repeat password" required="required"
+                       class="form-control"
+                       name="repeatedPassword"
+                       type="password"/>
+
+                <label for="repeatpassword" class="alert alert-danger" th:if="${repeatedPasswordError!=null}"
+                       th:text="${repeatedPasswordError}"></label>
+            </div>
+            <div class=" col-lg-1">
+                <input class="btn btn-primary" type="submit" value="Register"/>
+            </div>
+
+        </div>
+    </form>
+</div>
+<div th:unless="${register}">
+    <div class="alert alert-success">
+        <strong>Success!</strong>
+        <p><a th:href="@{/login}">here</a> to login.</p>
+    </div>
+</div>
+</body>
+</html>
