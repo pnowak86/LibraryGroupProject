@@ -33,5 +33,11 @@ public class BookController {
         return "books";
     }
 
+    @RequestMapping(value = "/rentedbooks", method = RequestMethod.GET)
+    public String getUserRentedBooks(Model model) {
+        List<Book> allUserRentedBooks = bookService.getUserRentedBooks();
+        model.addAttribute("rentedbooks", allUserRentedBooks);
+        return "rentedbooks";
+    }
 
 }

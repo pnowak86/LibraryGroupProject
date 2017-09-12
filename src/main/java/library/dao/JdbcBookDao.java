@@ -5,6 +5,8 @@ import library.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -16,8 +18,9 @@ import java.util.List;
  */
 @Repository
 public class JdbcBookDao implements BookDao {
+
     private static final String SELECT_ALL = "SELECT * FROM all_books;";
-    
+    private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ?";
 
 
     private JdbcTemplate jdbcTemplate;
@@ -25,6 +28,7 @@ public class JdbcBookDao implements BookDao {
     public JdbcBookDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 
     @Override
     public boolean create(Book book) {
@@ -34,6 +38,7 @@ public class JdbcBookDao implements BookDao {
     @Override
     public List<Book> getAll() {
         List<Book> allBooks = jdbcTemplate.query(SELECT_ALL, new RowMapper<Book>() {
+
             @Override
             public Book mapRow(ResultSet resultSet, int i) throws SQLException {
                 String  isbn = resultSet.getString("ISBN");
@@ -55,5 +60,41 @@ public class JdbcBookDao implements BookDao {
 
         return allBooks;
     }
+
+
+
+
+
+    @Override
+    public List<Book> getUserRented() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        List<Book> rentedBooks = jdbcTemplate.query("SELECT * FROM rented_books where username =" + "\'" +name+"\'" , new RowMapper<Book>() {
+
+            @Override
+            public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+                String isbn = resultSet.getString("ISBN");
+                String title = resultSet.getNString("title");
+                String author = resultSet.getNString("author");
+                String year = resultSet.getNString("year");
+                String category = resultSet.getNString("category");
+                Book book = new Book();
+                book.setIsbn(isbn);
+                book.setTitle(title);
+                book.setAuthor(author);
+                book.setYear(year);
+                book.setCategory(category);
+
+
+                return book;
+            }
+        });
+
+        return rentedBooks;
+
+    }
+
+
+
 
 }

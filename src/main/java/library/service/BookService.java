@@ -30,4 +30,11 @@ public class BookService {
     }
 
 
+
+
+    public List<Book> getUserRentedBooks() {
+        return bookDao.getUserRented();
+    }
+
+
 }

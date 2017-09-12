@@ -12,4 +12,5 @@ public interface BookDao {
     boolean create(Book book);
 
     List<Book> getAll();
+    List<Book> getUserRented();
 }
