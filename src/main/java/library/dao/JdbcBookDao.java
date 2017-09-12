@@ -16,7 +16,9 @@ import java.util.List;
  */
 @Repository
 public class JdbcBookDao implements BookDao {
-    private static final String SELECT_ALL = "select ISBN, title, author, year, category from all_books;";
+    private static final String SELECT_ALL = "SELECT * FROM all_books;";
+    
+
 
     private JdbcTemplate jdbcTemplate;
     @Autowired

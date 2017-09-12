@@ -23,14 +23,7 @@ public class BookService {
         this.bookDao = bookDao;
     }
 
-//    public Iterable<Book> getAll() {
-//        Iterable<BookEntity> all = bookRepository.findAll();
-//        List<Book> result = new ArrayList<>();
-//        for (BookEntity bookEntity : all) {
-//            result.add(bookTransformer.transformToBook(bookEntity));
-//        }
-//        return result;
-//    }
+
 
     public List<Book> getAllBooks() {
         return bookDao.getAll();
