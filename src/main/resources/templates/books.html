@@ -20,6 +20,7 @@
         <th>Author</th>
         <th>Year</th>
         <th>Category</th>
+        <th>Rent</th>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +30,11 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.year}"></td>
         <td th:text="${book.category}"></td>
+        <td>
+            <form method="post" th:action="@{'/rentedbooks/' + ${book.Isbn}}">
+                <button type="submit" class="btn">Rent</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -20,8 +20,8 @@ import java.util.List;
 public class JdbcBookDao implements BookDao {
 
     private static final String SELECT_ALL = "SELECT * FROM all_books;";
-    private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ?";
-
+    private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ";
+    private  static final String ADD_BOOK_TO_RENTED = "INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ?,?,?)";
 
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -32,7 +32,15 @@ public class JdbcBookDao implements BookDao {
 
     @Override
     public boolean create(Book book) {
-        return false;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        jdbcTemplate.update("INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ? ,? ,?)", "12345", "testowajava", "testowy autor", "testowty rok", "admin90", "drama" );
+
+
+        return true;
+
+
     }
 
     @Override
@@ -69,7 +77,7 @@ public class JdbcBookDao implements BookDao {
     public List<Book> getUserRented() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        List<Book> rentedBooks = jdbcTemplate.query("SELECT * FROM rented_books where username =" + "\'" +name+"\'" , new RowMapper<Book>() {
+        List<Book> rentedBooks = jdbcTemplate.query(SELECT_ALL_RENTED + "\'" +name+"\'" , new RowMapper<Book>() {
 
             @Override
             public Book mapRow(ResultSet resultSet, int i) throws SQLException {

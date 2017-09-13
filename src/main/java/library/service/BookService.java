@@ -24,13 +24,15 @@ public class BookService {
     }
 
 
-
     public List<Book> getAllBooks() {
         return bookDao.getAll();
     }
 
 
+    public void create(Book book) {
 
+        bookDao.create( book);
+    }
 
     public List<Book> getUserRentedBooks() {
         return bookDao.getUserRented();
