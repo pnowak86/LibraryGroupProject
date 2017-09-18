@@ -34,27 +34,33 @@ public class BookController {
         return "books";
     }
 
-
-    @RequestMapping(value = "/booksrented", method = RequestMethod.POST)
-    public String register(@ModelAttribute Book book, Model model) {
-        bookService.create(book);
-        boolean success = true;
-        model.addAttribute("success", success);
-        model.addAttribute("register", !success);
-
-        return "added to rent";
+    @RequestMapping(value = "/rentedbooks", method = RequestMethod.GET)
+    public String getUserRentedBooks(Model model) {
+        List<Book> allBooks = bookService.showRented();
+        model.addAttribute("rentedbooks", allBooks);
+        return "rentedbooks";
     }
 
-
-
-    @RequestMapping(value = "/rentedbooks/{isbn}", method = RequestMethod.POST)
-    public String getUserRentedBooks(@PathVariable("isbn") String isbn,Model model) {
-        //TODO: Usun z tabeli available i wrzuc do tabeli rent
-       // bookService.rentBook(isbn);
-        List<Book> allUserRentedBooks = bookService.getAllBooks();
-       allUserRentedBooks= allUserRentedBooks.stream().filter(b->!b.getIsbn().equals(isbn)).collect(Collectors.toList());
-        model.addAttribute("books", allUserRentedBooks);
-        return "books";
+    @RequestMapping(value = "/rentedbook/{isbn}", method = RequestMethod.POST)
+    public String getUserRentedBooks(@PathVariable("isbn") String isbn, Model model) {
+        bookService.rentBook(isbn);
+        List<Book> books = bookService.showAvailable();
+        model.addAttribute("available", books);
+        return "available";
     }
 
+    @RequestMapping(value = "/returnbook/{isbn}", method = RequestMethod.POST)
+    public String getUserReturnedBooks(@PathVariable("isbn") String isbn, Model model) {
+        bookService.returnBook(isbn);
+        List<Book> books = bookService.showRented();
+        model.addAttribute("rentedbooks", books);
+        return "rentedbooks";
+    }
+
+    @RequestMapping(value = "/available", method = RequestMethod.GET)
+    public String getAllAvailable(Model model) {
+        List<Book> allBooks = bookService.showAvailable();
+        model.addAttribute("available", allBooks);
+        return "available";
+    }
 }

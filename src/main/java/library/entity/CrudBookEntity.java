@@ -5,8 +5,8 @@ package library.entity;
         import javax.persistence.GenerationType;
         import javax.persistence.Id;
 
-    @Entity
-    public class BookEntity {
+    @Entity(name="all_books")
+    public class CrudBookEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +17,7 @@ package library.entity;
 
     private String category;
 
-    public BookEntity() {
+    public CrudBookEntity() {
     }
 
     public Long getId() {

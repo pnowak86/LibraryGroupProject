@@ -1,14 +1,10 @@
 package library.service;
 
 import library.dao.BookDao;
-import library.dao.UserDao;
 import library.dto.Book;
-import library.entity.BookEntity;
-import library.transformer.BookTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,12 +27,39 @@ public class BookService {
 
     public void create(Book book) {
 
-        bookDao.create( book);
+        bookDao.createForRented( book);
     }
 
-    public List<Book> getUserRentedBooks() {
-        return bookDao.getUserRented();
+    public void rentBook(String isbn){
+        Book book = bookDao.getBookFromAvailable(isbn);
+
+                    bookDao.removeBookFromAvailable(isbn);
+
+                    bookDao.createForRented(book);
+
     }
+
+    public void returnBook(String isbn){
+        Book book = bookDao.getBookFromRented(isbn);
+
+        bookDao.removeBookFromRented(isbn);
+
+        bookDao.createForAvailable(book);
+
+    }
+
+
+    public List<Book> showRented(){
+        return bookDao.getUserRentedBooks();
+    }
+
+    public List<Book> showAvailable(){
+        return bookDao.getAllAvaiable();
+    }
+
+//    public List<Book> getUserRentedBooks() {
+//        return bookDao.rentBookByUser();
+//    }
 
 
 }

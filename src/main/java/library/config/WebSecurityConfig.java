@@ -22,8 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
-                .antMatchers("/", "/home","/books")
+                .antMatchers("/", "/home","/books","/v1/library/**")
                 .permitAll()
                 .antMatchers("/sample")
                 .hasRole("ADMIN")
@@ -38,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+
+
 
         http.csrf()
                 .disable();

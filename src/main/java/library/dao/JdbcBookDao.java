@@ -1,7 +1,6 @@
 package library.dao;
 
 import library.dto.Book;
-import library.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,8 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -18,91 +15,100 @@ import java.util.List;
  */
 @Repository
 public class JdbcBookDao implements BookDao {
+    private static final String SELECT_ALL_BOOKS_IN_LIBRARY = "SELECT * FROM all_books;";
+    private static final String SELECT_ALL_AVAILABLE = "SELECT * FROM available_books;";
+    private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ? ";
+    private static final String SELECT_ONE_BOOK_FROM_AVAILABLE = "SELECT * FROM available_books where isbn = ?";
+    private static final String SELECT_ONE_BOOK_FROM_RENTED= "SELECT * FROM rented_books where isbn = ?";
+    public static final String DELETE_FROM_AVAILABLE_BOOKS_WHERE_ISBN = "Delete from available_books where isbn = ?";
+    public static final String DELETE_FROM_ALL_BOOKS_WHERE_ISBN = "Delete from all_books where isbn = ?";
+    public static final String DELETE_FROM_RENTED_BOOKS_WHERE_ISBN = "Delete from rented_books where isbn = ?";
+    public static final String INSERT_INTO_RENTED_BOOKS = "INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ? ,? ,?)";
+    public static final String INSERT_INTO_AVAILABLE_BOOKS = "INSERT INTO available_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
+    public static final String INSERT_INTO_ALL_BOOKS= "INSERT INTO all_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
+    public static final String UPDATE_BOOK_WHERE_ISBN ="UPDATE all_books  SET title = ?, author= ?, year = ?, category = ? WHERE ISBN = ?;";
 
-    private static final String SELECT_ALL = "SELECT * FROM all_books;";
-    private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ";
-    private  static final String ADD_BOOK_TO_RENTED = "INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ?,?,?)";
 
     private JdbcTemplate jdbcTemplate;
+    private RowMapper<Book> rowMapper;
+
     @Autowired
-    public JdbcBookDao(JdbcTemplate jdbcTemplate) {
+    public JdbcBookDao(JdbcTemplate jdbcTemplate,RowMapper<Book> rowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.rowMapper =rowMapper;
+    }
+    @Override
+    public boolean updateBook(Book book) {
+        jdbcTemplate.update(UPDATE_BOOK_WHERE_ISBN, book.getTitle(),book.getAuthor(),book.getYear(),book.getCategory(), "3435242385711");
+        return true;
+    }
+
+    @Override
+    public boolean createForRented(Book book) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        jdbcTemplate.update(INSERT_INTO_RENTED_BOOKS, book.getIsbn(), book.getTitle(),book.getAuthor(),book.getYear(),name, book.getCategory());
+        return true;
+    }
+
+    @Override
+    public boolean createForAllBooks(Book book) {
+        jdbcTemplate.update(INSERT_INTO_ALL_BOOKS, book.getIsbn(), book.getTitle(),book.getAuthor(),book.getYear(), book.getCategory());
+        return true;
     }
 
 
     @Override
-    public boolean create(Book book) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-
-        jdbcTemplate.update("INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ? ,? ,?)", "12345", "testowajava", "testowy autor", "testowty rok", "admin90", "drama" );
-
-
+    public boolean createForAvailable(Book book) {
+        jdbcTemplate.update(INSERT_INTO_AVAILABLE_BOOKS, book.getIsbn(), book.getTitle(),book.getAuthor(),book.getYear(), book.getCategory());
         return true;
-
-
     }
 
     @Override
     public List<Book> getAll() {
-        List<Book> allBooks = jdbcTemplate.query(SELECT_ALL, new RowMapper<Book>() {
-
-            @Override
-            public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-                String  isbn = resultSet.getString("ISBN");
-                String title = resultSet.getNString("title");
-                String author = resultSet.getNString("author");
-                String year = resultSet.getNString("year");
-                String category = resultSet.getNString("category");
-                Book book = new Book();
-                book.setIsbn(isbn);
-                book.setTitle(title);
-                book.setAuthor(author);
-                book.setYear(year);
-                book.setCategory(category);
-
-
-                return book;
-            }
-        });
-
-        return allBooks;
+        return jdbcTemplate.query(SELECT_ALL_BOOKS_IN_LIBRARY,rowMapper);
     }
-
-
-
 
 
     @Override
-    public List<Book> getUserRented() {
+    public List<Book> getUserRentedBooks() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        List<Book> rentedBooks = jdbcTemplate.query(SELECT_ALL_RENTED + "\'" +name+"\'" , new RowMapper<Book>() {
+        List<Book> allBooks = jdbcTemplate.query(SELECT_ALL_RENTED, rowMapper,name);
+        return allBooks;
+    }
 
-            @Override
-            public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-                String isbn = resultSet.getString("ISBN");
-                String title = resultSet.getNString("title");
-                String author = resultSet.getNString("author");
-                String year = resultSet.getNString("year");
-                String category = resultSet.getNString("category");
-                Book book = new Book();
-                book.setIsbn(isbn);
-                book.setTitle(title);
-                book.setAuthor(author);
-                book.setYear(year);
-                book.setCategory(category);
+    @Override
+    public Book getBookFromAvailable(String isbn) {
+        return jdbcTemplate.queryForObject(SELECT_ONE_BOOK_FROM_AVAILABLE,rowMapper,isbn);
+    }
 
+    @Override
+    public Book getBookFromRented(String isbn) {
+        return jdbcTemplate.queryForObject(SELECT_ONE_BOOK_FROM_RENTED,rowMapper,isbn);
+    }
 
-                return book;
-            }
-        });
+    @Override
+    public void removeBookFromAvailable(String isbn) {
+        jdbcTemplate.update(DELETE_FROM_AVAILABLE_BOOKS_WHERE_ISBN,isbn);
+    }
 
-        return rentedBooks;
-
+    @Override
+    public void removeBookFromAllBooks(String isbn) {
+        jdbcTemplate.update(DELETE_FROM_ALL_BOOKS_WHERE_ISBN,isbn);
     }
 
 
+    @Override
+    public void removeBookFromRented(String isbn) {
+        jdbcTemplate.update(DELETE_FROM_RENTED_BOOKS_WHERE_ISBN,isbn);
+    }
 
+
+    @Override
+    public List<Book> getAllAvaiable() {
+        List<Book> allBooks = jdbcTemplate.query(SELECT_ALL_AVAILABLE, rowMapper);
+        return allBooks;
+    }
 
 }

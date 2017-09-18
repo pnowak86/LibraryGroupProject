@@ -6,7 +6,7 @@ import library.dto.Book;
 import library.entity.CrudBookEntity;
 
 @Component
-public class BookTransformer {
+public class CrudBookTransformer {
 
     public CrudBookEntity transformToBookEntity(Book book) {
         CrudBookEntity bookEntity = new CrudBookEntity();

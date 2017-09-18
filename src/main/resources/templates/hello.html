@@ -8,6 +8,14 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+
+    <a href ="/books"><input type="button" value="All books in library"/></a>
+
+    <a href ="/available"><input type="button" value="Available books"/></a>
+
+    <a href ="/rentedbooks"><input type="button" value="My rented books"/></a>
+
+
 <div sec:authorize="hasRole('ADMIN')">
     <a th:href="@{/users}">Admin page</a>
 </div>

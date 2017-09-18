@@ -9,9 +9,20 @@
     <script th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js}"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
 </head>
 <body>
 <h1>All books:</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<a href ="/books"><input type="button" value="All books in library"/></a>
+
+<a href ="/available"><input type="button" value="Available books"/></a>
+
+<a href ="/rentedbooks"><input type="button" value="My rented books"/></a>
+
 <table class="table table-hover">
     <thead>
     <tr>
@@ -20,7 +31,7 @@
         <th>Author</th>
         <th>Year</th>
         <th>Category</th>
-        <th>Rent</th>
+
     </tr>
     </thead>
     <tbody>
@@ -30,11 +41,7 @@
         <td th:text="${book.author}"></td>
         <td th:text="${book.year}"></td>
         <td th:text="${book.category}"></td>
-        <td>
-            <form method="post" th:action="@{'/rentedbooks/' + ${book.Isbn}}">
-                <button type="submit" class="btn">Rent</button>
-            </form>
-        </td>
+
     </tr>
     </tbody>
 </table>

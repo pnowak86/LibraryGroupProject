@@ -16,9 +16,9 @@ public class Application {
     public DriverManagerDataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/newschema");
+        driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/newschema?useUnicode=yes&characterEncoding=UTF-8");
         driverManagerDataSource.setUsername("root");
-       // driverManagerDataSource.setPassword("root");
+        driverManagerDataSource.setPassword("root");
         return driverManagerDataSource;
     }
 
