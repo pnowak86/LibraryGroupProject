@@ -31,8 +31,11 @@ public class RestBookController {
     }
 
     @RequestMapping(value = "/v1/library/book/{isbn}",method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody Book book) {
-        boolean updated = crudBookService.update(book);
+    public ResponseEntity update(@RequestBody Book book, @PathVariable ("isbn") String isbn) {
+        if(!crudBookService.exist(isbn)){
+            return new ResponseEntity<>("Provided isbn does not exist!",HttpStatus.BAD_REQUEST);
+        }
+        boolean updated = crudBookService.update(book, isbn);
         return updated ? new ResponseEntity<>(new CrudBookResponse("Successfully updated"), HttpStatus.OK)
                 : createNonExisting(book.getIsbn());
     }

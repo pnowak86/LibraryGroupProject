@@ -1,18 +1,9 @@
 package library.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import library.dao.BookDao;
-import library.dao.CrudBookRepository;
-import library.dao.JdbcBookDao;
-import library.entity.CrudBookEntity;
-import library.transformer.CrudBookTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import library.dto.Book;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 @Service
@@ -45,7 +36,12 @@ public class RestBookService {
         return bookDao.getBookFromAvailable(isbn);
     }
 
-    public boolean update(Book book) {
-       return bookDao.updateBook(book);
+    public boolean update(Book book, String isbn) {
+        bookDao.updateBookInAvailableBooks(book,isbn);
+       return bookDao.updateBookInAllBooks(book, isbn);
+    }
+
+    public boolean exist(String isbn) {
+        return bookDao.exist(isbn);
     }
 }

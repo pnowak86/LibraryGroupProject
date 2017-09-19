@@ -6,7 +6,9 @@ import java.util.List;
 
 
 public interface BookDao {
-    boolean updateBook(Book book);
+    boolean updateBookInAllBooks(Book book, String isbn);
+
+    boolean updateBookInAvailableBooks(Book book, String isbn);
 
     boolean createForRented(Book book);
 
@@ -27,4 +29,6 @@ public interface BookDao {
     void removeBookFromAllBooks(String isbn);
 
     void removeBookFromRented(String isbn);
+
+    boolean exist(String isbn);
 }

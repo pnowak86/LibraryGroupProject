@@ -54,7 +54,6 @@ public class UserController {
     public String change(@ModelAttribute User user, Model model) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("users", allUsers);
-        // TODO: change role
         return "users";
     }
 

@@ -20,14 +20,14 @@ public class JdbcBookDao implements BookDao {
     private static final String SELECT_ALL_RENTED = "SELECT * FROM rented_books where username = ? ";
     private static final String SELECT_ONE_BOOK_FROM_AVAILABLE = "SELECT * FROM available_books where isbn = ?";
     private static final String SELECT_ONE_BOOK_FROM_RENTED= "SELECT * FROM rented_books where isbn = ?";
-    public static final String DELETE_FROM_AVAILABLE_BOOKS_WHERE_ISBN = "Delete from available_books where isbn = ?";
-    public static final String DELETE_FROM_ALL_BOOKS_WHERE_ISBN = "Delete from all_books where isbn = ?";
-    public static final String DELETE_FROM_RENTED_BOOKS_WHERE_ISBN = "Delete from rented_books where isbn = ?";
-    public static final String INSERT_INTO_RENTED_BOOKS = "INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ? ,? ,?)";
-    public static final String INSERT_INTO_AVAILABLE_BOOKS = "INSERT INTO available_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
-    public static final String INSERT_INTO_ALL_BOOKS= "INSERT INTO all_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
-    public static final String UPDATE_BOOK_WHERE_ISBN ="UPDATE all_books  SET title = ?, author= ?, year = ?, category = ? WHERE ISBN = ?;";
-
+    private static final String DELETE_FROM_AVAILABLE_BOOKS_WHERE_ISBN = "Delete from available_books where isbn = ?";
+    private static final String DELETE_FROM_ALL_BOOKS_WHERE_ISBN = "Delete from all_books where isbn = ?";
+    private static final String DELETE_FROM_RENTED_BOOKS_WHERE_ISBN = "Delete from rented_books where isbn = ?";
+    private static final String INSERT_INTO_RENTED_BOOKS = "INSERT INTO rented_books(ISBN, title, author, year, username, category) VALUES(?, ?, ?, ? ,? ,?)";
+    private static final String INSERT_INTO_AVAILABLE_BOOKS = "INSERT INTO available_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
+    private static final String INSERT_INTO_ALL_BOOKS= "INSERT INTO all_books(ISBN, title, author, year, category) VALUES(?, ?, ?, ? ,?)";
+    private static final String UPDATE_BOOK_IN_ALL_BOOKS_WHERE_ISBN ="UPDATE all_books  SET title = ?, author= ?, year = ?, category = ? WHERE ISBN = ?;";
+    private static final String UPDATE_BOOK_IN_AVAILABLE_BOOKS_WHERE_ISBN ="UPDATE available_books  SET title = ?, author= ?, year = ?, category = ? WHERE ISBN = ?;";
 
     private JdbcTemplate jdbcTemplate;
     private RowMapper<Book> rowMapper;
@@ -38,10 +38,17 @@ public class JdbcBookDao implements BookDao {
         this.rowMapper =rowMapper;
     }
     @Override
-    public boolean updateBook(Book book) {
-        jdbcTemplate.update(UPDATE_BOOK_WHERE_ISBN, book.getTitle(),book.getAuthor(),book.getYear(),book.getCategory(), "3435242385711");
+    public boolean updateBookInAllBooks(Book book, String isbn) {
+        jdbcTemplate.update(UPDATE_BOOK_IN_ALL_BOOKS_WHERE_ISBN, book.getTitle(),book.getAuthor(),book.getYear(),book.getCategory(), isbn);
         return true;
     }
+
+    @Override
+    public boolean updateBookInAvailableBooks(Book book, String isbn) {
+        jdbcTemplate.update(UPDATE_BOOK_IN_AVAILABLE_BOOKS_WHERE_ISBN, book.getTitle(),book.getAuthor(),book.getYear(),book.getCategory(), isbn);
+        return true;
+    }
+
 
     @Override
     public boolean createForRented(Book book) {
@@ -102,6 +109,11 @@ public class JdbcBookDao implements BookDao {
     @Override
     public void removeBookFromRented(String isbn) {
         jdbcTemplate.update(DELETE_FROM_RENTED_BOOKS_WHERE_ISBN,isbn);
+    }
+
+    @Override
+    public boolean exist(String isbn) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) from available_books WHERE isbn=?",Integer.class,isbn) == 1;
     }
 
 
