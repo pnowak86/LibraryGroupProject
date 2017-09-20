@@ -16,10 +16,10 @@ public class BookRowMapper implements RowMapper<Book> {
     @Override
     public Book mapRow(ResultSet resultSet, int i) throws SQLException {
         String  isbn = resultSet.getString("ISBN");
-        String title = resultSet.getNString("title");
-        String author = resultSet.getNString("author");
-        String year = resultSet.getNString("year");
-        String category = resultSet.getNString("category");
+        String title = resultSet.getString("title");
+        String author = resultSet.getString("author");
+        String year = resultSet.getString("year");
+        String category = resultSet.getString("category");
         Book book = new Book();
         book.setIsbn(isbn);
         book.setTitle(title);

@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 public class JdbcUserDao implements UserDao {
-    private static String INSERT_USERS_QUERY = "INSERT INTO users (username,password,enabled) VALUES(?,?,true)";
+    private static String INSERT_USERS_QUERY = "INSERT INTO users (username,password,enabled) VALUES(?,?,1)";
     private static final String INSERT_ROLE_QUERY = "INSERT INTO user_roles (username,role) VALUES(?, 'ROLE_USER')";
     private static final String EXIST_USERS_QUERY = "SELECT count(*) FROM users WHERE username = ?";
     private static final String SELECT_ALL = "SELECT * FROM users u join user_roles ur on u.username = ur.username WHERE ur.username NOT IN (SELECT ur.username FROM user_roles ur where ur.role = 'ROLE_ADMIN')";
