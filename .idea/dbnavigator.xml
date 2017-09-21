@@ -23,202 +23,113 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="84be6912-34bc-4808-9a7f-cbaee0425091">
+        <schema name="pg_catalog" object-types="function, table, view" />
+        <schema name="public" object-types="column, function, table, view" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="84be6912-34bc-4808-9a7f-cbaee0425091">
-      <console name="Connection" type="STANDARD"><![CDATA[-- MySQL dump 10.13  Distrib 5.7.19, for Linux (x86_64)
---
--- Host: localhost    Database: newschema
--- ------------------------------------------------------
--- Server version	5.7.19-0ubuntu0.17.04.1
+      <console name="Connection" type="STANDARD"><![CDATA[-- Converted by db_converter
+START TRANSACTION;
+SET standard_conforming_strings=off;
+SET escape_string_warning=off;
+SET CONSTRAINTS ALL DEFERRED;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE "all_books" (
+    "isbn" varchar(26) NOT NULL,
+    "title" varchar(90) NOT NULL,
+    "author" varchar(90) NOT NULL,
+    "year" varchar(90) NOT NULL,
+    "category" varchar(90) NOT NULL,
+    PRIMARY KEY ("isbn")
+);
 
---
--- Table structure for table `all_books`
---
+INSERT INTO "all_books" (isbn, title, author, year, category) VALUES
 
-CREATE TABLE all_books (
-  ISBN varchar(13) NOT NULL,
-  title varchar(45) NOT NULL,
-  author varchar(45) NOT NULL,
-  year varchar(45) NOT NULL,
-  category varchar(45) NOT NULL,
-  PRIMARY KEY (ISBN)
-) ;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `all_books`
---
 
-LOCK TABLES all_books WRITE;
-/*!40000 ALTER TABLE `all_books` DISABLE KEYS */;
-INSERT INTO all_books VALUES ('0223165109897','Lew, czarownica i stara szafa','Clive Staples Lewis','1934','fantastyka'),('0836832848798','Hobbit, czyli tam i z powrotem','John Ronald Reuel Tolkien','1937','fantastyka'),('2291264248189','Mały Książę','Antoine de Saint-Exupéry','1943','proza'),('3435242385788','Zbrodnia i kara','Fiodor Dostojewski','1865','proza'),('3528360421166','Oliver Twist','Charles Dickens','1837','proza'),('4146256034450','W pustyni i w puszczy','Henryk Sienkiewicz','1911','przygoda'),('4261506532519','Rok 1984','George Orwell','1984','fantastyka'),('4845680461005','Kod Leonarda da Vinci','Dan Brown','2004','sensacja'),('5699032390315','Alicja w Krainie Czarów','Lewis Carroll ','1911','fantastyka'),('6082359918216','Cień wiatru','Carlos Ruiz Zafón','1945','dramat'),('7007819182806','Jądro ciemności','Joseph Conrad','1899','proza'),('8019465926901','Ania z Zielonego Wzgórza','Lucy Maud Montgomery','1833','proza'),('8202055334702','Trzej muszkieterowie','Aleksander Dumas','1625','przygoda'),('8494258528804','Moby Dick','Herman Melville','1902','proza'),('8503543399990','Folwark zwierzęcy','George Orwell ','1990','fantastyka'),('9018369956829','Hamlet','William Shakespeare','1599','proza'),('9141303127063','Autostopem przez galaktykę','Douglas Adams','1965','fantastyka');
-/*!40000 ALTER TABLE `all_books` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `available_books`
---
 
-DROP TABLE IF EXISTS available_books;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE available_books (
-  ISBN varchar(13) NOT NULL,
-  title varchar(45) NOT NULL,
-  author varchar(45) NOT NULL,
-  year varchar(45) NOT NULL,
-  category varchar(45) NOT NULL,
-  PRIMARY KEY (ISBN)
-) ;
+delete from available_books where isbn ='0223165109897';
 
-CREATE INDEX ISBN ON available_books (ISBN);
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `available_books`
---
+INSERT INTO available_books(isbn, title, author, year, category)
+SELECT isbn, title, author, year, category FROM all_books;
 
-LOCK TABLES available_books WRITE;
-/*!40000 ALTER TABLE `available_books` DISABLE KEYS */;
-INSERT INTO available_books VALUES ('0223165109897','Lew, czarownica i stara szafa','Clive Staples Lewis','1934','fantastyka'),('0836832848798','Hobbit, czyli tam i z powrotem','John Ronald Reuel Tolkien','1937','fantastyka'),('2291264248189','Mały Książę','Antoine de Saint-Exupéry','1943','proza'),('3435242385788','Zbrodnia i kara','Fiodor Dostojewski','1865','proza'),('3528360421166','Oliver Twist','Charles Dickens','1837','proza'),('4146256034450','W pustyni i w puszczy','Henryk Sienkiewicz','1911','przygoda'),('4261506532519','Rok 1984','George Orwell','1984','fantastyka'),('4845680461005','Kod Leonarda da Vinci','Dan Brown','2004','sensacja'),('5699032390315','Alicja w Krainie Czarów','Lewis Carroll ','1911','fantastyka'),('6082359918216','Cień wiatru','Carlos Ruiz Zafón','1945','dramat'),('7007819182806','Jądro ciemności','Joseph Conrad','1899','proza'),('8019465926901','Ania z Zielonego Wzgórza','Lucy Maud Montgomery','1833','proza'),('8202055334702','Trzej muszkieterowie','Aleksander Dumas','1625','przygoda'),('8494258528804','Moby Dick','Herman Melville','1902','proza'),('8503543399990','Folwark zwierzęcy','George Orwell ','1990','fantastyka'),('9018369956829','Hamlet','William Shakespeare','1599','proza'),('9141303127063','Autostopem przez galaktykę','Douglas Adams','1965','fantastyka');
-/*!40000 ALTER TABLE `available_books` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `rented_books`
---
 
-DROP TABLE IF EXISTS rented_books;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE rented_books (
-  ISBN varchar(13) NOT NULL,
-  title varchar(45) NOT NULL,
-  author varchar(45) NOT NULL,
-  year varchar(45) NOT NULL,
-  username varchar(45) NOT NULL,
-  category varchar(45) NOT NULL,
-  PRIMARY KEY (ISBN)
- ,
-  CONSTRAINT fk_username_rented FOREIGN KEY (username) REFERENCES users (username),
-  CONSTRAINT rented_books_ibfk_1 FOREIGN KEY (ISBN) REFERENCES all_books (ISBN)
-) ;
 
-CREATE INDEX fk_username_rented ON rented_books (username);
-CREATE INDEX ISBN ON rented_books (ISBN);
-/*!40101 SET character_set_client = @saved_cs_client */;
+('9141303127063','Autostopem przez galaktykę','Douglas Adams','1965','fantastyka');
 
---
--- Dumping data for table `rented_books`
---
+Commit
+CREATE TABLE "available_books" (
+    "isbn" varchar(26) NOT NULL,
+    "title" varchar(90) NOT NULL,
+    "author" varchar(90) NOT NULL,
+    "year" varchar(90) NOT NULL,
+    "category" varchar(90) NOT NULL,
+    PRIMARY KEY ("isbn")
+);
 
-LOCK TABLES rented_books WRITE;
-/*!40000 ALTER TABLE `rented_books` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rented_books` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO "available_books" VALUES ('0223165109897','Lew, czarownica i stara szafa','Clive Staples Lewis','1934','fantastyka'),('0836832848798','Hobbit, czyli tam i z powrotem','John Ronald Reuel Tolkien','1937','fantastyka'),('2291264248189','Mały Książę','Antoine de Saint-Exupéry','1943','proza'),('3435242385788','Zbrodnia i kara','Fiodor Dostojewski','1865','proza'),('3528360421166','Oliver Twist','Charles Dickens','1837','proza'),('4146256034450','W pustyni i w puszczy','Henryk Sienkiewicz','1911','przygoda'),('4261506532519','Rok 1984','George Orwell','1984','fantastyka'),('4845680461005','Kod Leonarda da Vinci','Dan Brown','2004','sensacja'),('5699032390315','Alicja w Krainie Czarów','Lewis Carroll ','1911','fantastyka'),('7007819182806','Jądro ciemności','Joseph Conrad','1899','proza'),('8019465926901','Ania z Zielonego Wzgórza','Lucy Maud Montgomery','1833','proza'),('8202055334702','Trzej muszkieterowie','Aleksander Dumas','1625','przygoda'),('8494258528804','Moby Dick','Herman Melville','1902','proza'),('8503543399990','Folwark zwierzęcy','George Orwell ','1990','fantastyka'),('9018369956829','Hamlet','William Shakespeare','1599','proza'),('9141303127063','Autostopem przez galaktykę','Douglas Adams','1965','fantastyka');
+CREATE TABLE "rented_books" (
+    "isbn" varchar(26) NOT NULL,
+    "title" varchar(90) NOT NULL,
+    "author" varchar(90) NOT NULL,
+    "year" varchar(90) NOT NULL,
+    "username" varchar(90) NOT NULL,
+    "category" varchar(90) NOT NULL,
+    PRIMARY KEY ("isbn")
+);
 
---
--- Table structure for table `user_roles`
---
+INSERT INTO "rented_books" VALUES ('6082359918216','Cień wiatru','Carlos Ruiz Zafón','1945','admin909','dramat');
+CREATE TABLE "user_roles" (
+    "user_role_id" serial NOT NULL,
+    "username" varchar(90) NOT NULL,
+    "role" varchar(90) NOT NULL,
+    PRIMARY KEY ("user_role_id"),
+    UNIQUE ("role","username")
+);
 
-DROP TABLE IF EXISTS user_roles;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE SEQUENCE user_roles_seq;
+INSERT INTO "user_roles" VALUES (2,'admin','ROLE_ADMIN'),(1,'admin','ROLE_USER'),(6,'admin1234','ROLE_USER'),(8,'admin80','ROLE_USER'),(7,'admin90','ROLE_USER'),(9,'admin909','ROLE_USER'),(4,'mat','ROLE_USER'),(5,'test111','ROLE_USER'),(3,'user','ROLE_USER');
+CREATE TABLE "users" (
+    "username" varchar(90) NOT NULL,
+    "password" varchar(90) NOT NULL,
+    "enabled" int4 NOT NULL DEFAULT '1',
+    PRIMARY KEY ("username")
+);
 
-CREATE TABLE user_roles (
-  user_role_id int NOT NULL DEFAULT NEXTVAL ('user_roles_seq'),
-  username varchar(45) NOT NULL,
-  role varchar(45) NOT NULL,
-  PRIMARY KEY (user_role_id),
-  CONSTRAINT uni_username_role UNIQUE  (role,username)
- ,
-  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username)
-)  ;
+INSERT INTO "users" VALUES ('admin','admin',1),('admin1234','admin1234',1),('admin80','1234',1),('admin90','1234',1),('admin909','1234',1),('mat','mat',1),('mat1','mat1',1),('root','root',1),('test','test',1),('test111','test111',1),('user','123456',1);
 
-ALTER SEQUENCE user_roles_seq RESTART WITH 9;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Post-data save --
+COMMIT;
+START TRANSACTION;
 
-CREATE INDEX fk_username_idx ON user_roles (username);
+-- Typecasts --
+ALTER TABLE "users" ALTER COLUMN "enabled" DROP DEFAULT, ALTER COLUMN "enabled" TYPE boolean USING CAST("enabled" as boolean);
 
---
--- Dumping data for table `user_roles`
---
+-- Foreign keys --
+ALTER TABLE "rented_books" ADD CONSTRAINT "fk_username_rented" FOREIGN KEY ("username") REFERENCES "users" ("username") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX ON "rented_books" ("username");
+ALTER TABLE "rented_books" ADD CONSTRAINT "rented_books_ibfk_1" FOREIGN KEY ("ISBN") REFERENCES "all_books" ("ISBN") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX ON "rented_books" ("ISBN");
+ALTER TABLE "user_roles" ADD CONSTRAINT "fk_username" FOREIGN KEY ("username") REFERENCES "users" ("username") DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX ON "user_roles" ("username");
 
-LOCK TABLES user_roles WRITE;
-/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO user_roles VALUES (2,'admin','ROLE_ADMIN'),(1,'admin','ROLE_USER'),(6,'admin1234','ROLE_USER'),(8,'admin80','ROLE_USER'),(7,'admin90','ROLE_USER'),(4,'mat','ROLE_USER'),(5,'test111','ROLE_USER'),(3,'user','ROLE_USER');
-/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
-UNLOCK TABLES;
+-- Sequences --
 
---
--- Table structure for table `users`
---
-DROP TABLE user_roles;
+-- Full Text keys --
 
-DROP TABLE IF EXISTS users;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE users (
-  username varchar(45) NOT NULL,
-  password varchar(45) NOT NULL,
-  enabled smallint NOT NULL DEFAULT '1',
-  PRIMARY KEY (username)
-) ;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES users WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO users VALUES ('admin','admin',1),('admin1234','admin1234',1),('admin80','1234',1),('admin90','1234',1),('mat','mat',1),('mat1','mat1',1),('root','root',1),('test','test',1),('test111','test111',1),('user','123456',1);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2017-09-19 17:49:15
-
-select * from user_roles;
-
-CREATE SEQUENCE user_roles_seq;
-CREATE TABLE user_roles (
-  user_role_id int NOT NULL DEFAULT NEXTVAL ('user_roles_seq'),
-  username varchar(45) NOT NULL,
-  role varchar(45) NOT NULL,
-  PRIMARY KEY (user_role_id),
-  CONSTRAINT uni_username_role UNIQUE  (role,username)
- ,
-  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username)
-)  ;
-
-select * from user_roles;
-
-drop table user_roles;]]></console>
+COMMIT;]]></console>
     </connection>
     <connection id="5f9926a7-52e0-4c55-9a9a-71f00fd7bd48">
       <console name="Connection 1" type="STANDARD" />
+    </connection>
+    <connection id="9d133c21-799d-4b84-b1c6-bef97ec12383">
+      <console name="Connection 2" type="STANDARD" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
@@ -331,6 +242,82 @@ drop table user_roles;]]></console>
       <connection id="5f9926a7-52e0-4c55-9a9a-71f00fd7bd48" active="true">
         <database>
           <name value="Connection 1" />
+          <description value="" />
+          <database-type value="POSTGRES" />
+          <config-type value="BASIC" />
+          <database-version value="9999.0" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="DATABASE" />
+          <host value="localhost" />
+          <port value="5432" />
+          <database value="postgres" />
+          <os-authentication value="false" />
+          <empty-password value="false" />
+          <user value="" />
+          <password value="" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <proxy-password value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <details>
+          <charset value="UTF-8" />
+          <ddl-file-binding value="true" />
+          <database-logging value="false" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="true" />
+          <environment-type value="default" />
+          <idle-time-to-disconnect value="30" />
+          <password-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false">
+          <object-type-filter use-master-settings="true">
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
+      <connection id="9d133c21-799d-4b84-b1c6-bef97ec12383" active="true">
+        <database>
+          <name value="Connection 2" />
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class JdbcBookDao implements BookDao {
     public JdbcBookDao(JdbcTemplate jdbcTemplate,RowMapper<Book> rowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rowMapper =rowMapper;
+
     }
     @Override
     public boolean updateBookInAllBooks(Book book, String isbn) {
